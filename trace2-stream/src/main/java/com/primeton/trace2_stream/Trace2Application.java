@@ -9,6 +9,7 @@
  *******************************************************************************/
 package com.primeton.trace2_stream;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,7 +22,6 @@ import org.springframework.web.client.RestTemplate;
 
 
 @RestController
-@EnableDiscoveryClient
 @SpringBootApplication
 public class Trace2Application {
     
@@ -33,10 +33,10 @@ public class Trace2Application {
         return new RestTemplate();
     }
     
-    @GetMapping("/trace4")
+    @GetMapping("/trace4span")
     public String home() {
-      log.info("****call trace2****");
-      return "trace";
+        log.log(Level.INFO, "you called home");
+        return "Hello World";
     }
     
     public static void main(String[] args) {

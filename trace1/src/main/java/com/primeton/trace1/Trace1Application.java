@@ -9,10 +9,10 @@
  *******************************************************************************/
 package com.primeton.trace1;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,25 +20,29 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
-@EnableDiscoveryClient
 @SpringBootApplication
 public class Trace1Application {
-    
-    private static Logger log = Logger.getLogger(Trace1Application.class); 
-    
+
+    private static Logger log = Logger.getLogger(Trace1Application.class);
+
+//    @GetMapping("/trace1span1")
+//    public String callHome1() {
+//        log.log(Level.INFO, "calling home");
+//        return "Hello world";
+//    }
+
     @Bean
     @LoadBalanced
-    RestTemplate restTemplate(){
+    RestTemplate restTemplate() {
         return new RestTemplate();
     }
-    
-    @GetMapping("/trace1")
-    public String home() {
-      log.info("****call trace1****");
-      return restTemplate().getForEntity("http://trace2/trace2",
-              String.class).getBody();
+
+    @GetMapping("/trace1span2")
+    public String callHome2() {
+        log.log(Level.INFO, "calling home");
+        return restTemplate().getForEntity("http://localhost:8081/trace2span", String.class).getBody();
     }
-    
+
     public static void main(String[] args) {
         SpringApplication.run(Trace1Application.class, args);
     }
